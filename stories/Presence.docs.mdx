@@ -1,0 +1,16 @@
+import { Meta, Stories } from '@storybook/blocks';
+import * as BoardCanvasStories from './BoardCanvas.stories';
+
+<Meta title="Docs/Presence" of={BoardCanvasStories} />
+
+# Presence Suite
+
+Die Presence-Komponenten bestehen aus:
+
+- PresenceLayer: Zeichnet Cursor-Badges aller Nutzer auf dem Board, inkl. Presenter-Hervorhebung.
+- PresenceList: Überlappende Badges (+N). Klick auf einen Badge pannt smooth zum Cursor des Users.
+- UserBadge: Wiederverwendbares Badge mit States (default, presenting, inactive) und Tooltip.
+
+<Stories />
+
+

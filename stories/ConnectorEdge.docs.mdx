@@ -1,0 +1,113 @@
+import { Meta, Primary, Stories } from '@storybook/blocks';
+import * as ConnectorEdgeStories from './ConnectorEdge.stories';
+
+<Meta title="Docs/ConnectorEdge" of={ConnectorEdgeStories} />
+
+# ConnectorEdge
+
+SVG-basierte Verbindungen zwischen Prismion-Karten mit Orthogonal-Routing, abgerundeten Ecken und kollisionsvermeidendem Pfad.
+
+## Überblick
+
+- Orthogonale Pfade (90°) mit abgerundeten Ecken (Quadratic Bézier)
+- 50px Ausgangssegmente senkrecht zur Card-Kante (visuell ruhiger Ausstieg)
+- Kollisionsvermeidung über Wegpunkte (obstacles aus Card-Bounds)
+- Dynamische Styles:
+  - Standard: grau, gestrichelt
+  - Bei Selection einer verbundenen Karte: primär, solide (inkl. Pfeilspitze)
+- Interaktives Overlay: Richtungswechsel (Pfeilspitze Anfang/Ende)
+- Pointer Events:
+  - Drag via Pointer Capture, `elementFromPoint` ermittelt Drop-Ziel (Card/Connector)
+  - SVG `pointer-events: none`, Pfad `pointer-events: stroke` (drunterliegende Cards bleiben zugreifbar)
+
+## Architektur & API
+
+Dateien:
+
+- `src/components/board/connector-edge.tsx` – Rendering, Pointer-Interaktionen, Overlay
+- `src/lib/connector-utils.ts` – Geometrie & Routing (Port-Berechnung, Obstacles, Pfadpunkte)
+
+Wichtige Props:
+
+- `connector`: `{ id, from: { prismionId, port }, to: { prismionId, port }, label? }`
+- `prismions`: `Record<PrismionID, Prismion>` (liefert Position/Size → Obstacles/Ports)
+- `selectedPrismionIds`: `string[]` (steuert Style: primär/solide)
+- `onDirectionChange?(id, 'forward' | 'backward')`
+- `onNewConnection?(fromConnectorId, targetId, optimalPort?)`
+
+## Beispiel (Minimal)
+
+```tsx
+<ConnectorEdge
+  connector={connector}
+  prismions={prismions}
+  selectedPrismionIds={selectedIds}
+  onDirectionChange={(id, dir) => updateConnector(id, { direction: dir })}
+  onNewConnection={(fromId, targetId, optimalPort) => {
+    // Wenn targetId eine Prismion-ID ist: neuen Connector anlegen (fromId → targetId:optimalPort)
+    // Wenn targetId eine Connector-ID ist: Connectoren verketten (abhängig von Logik)
+  }}
+/>
+```
+
+## Pfad-Generierung (Orthogonal + Rounded)
+
+Ablauf (vereinfacht):
+
+1) `getPortPosition(prismion, port)` liefert die exakten Start-/Endpunkte an der Card-Kante
+2) `findPathAvoidingObstacles(from, to, obstacles, excludeIds, fromPort, toPort)` erzeugt eine Sequenz von Punkten:
+   - 50px Exit vom Start (orthogonal), 50px Entry zum Ziel (orthogonal)
+   - Zwischensegmente werden so gewählt, dass sie um Obstacles geführt werden
+3) `buildRoundedPathData(points, radius)` (in `connector-edge.tsx`) wandelt rechtwinklige Turns in Q-Bézier mit kontrolliertem Radius um
+
+Beispiel (vereinfachte Punktefolge):
+
+```text
+M 100 200   L 150 200   Q 170 200, 170 220   L 170 300   Q 170 320, 190 320   L 240 320
+```
+
+Hier sorgen die Q-Kommandos für weiche 90°-Kurven. Der tatsächliche Radius wird pro Turn auf die Segmentlängen begrenzt.
+
+## Obstacles & Bounds
+
+- Obstacles werden aus allen Cards abgeleitet (außer den beiden verbundenen)
+- Struktur: `{ x, y, width, height, id }`
+- `getConnectorBounds` berechnet die minimal notwendige SVG-Viewport-Box (minX/minY/width/height) für den Pfad – reduziert DOM-Overdraw
+
+## Styles & Pfeilspitzen
+
+- Standardstil: `stroke: #9ca3af`, `strokeWidth: 2`, `strokeDasharray: 5,5`
+- Selektiert (verbundene Card): `stroke: hsl(var(--primary))`, `strokeDasharray: none`
+- Pfeile: `markerStart`/`markerEnd` je nach `direction` (`forward` → `markerEnd`, `backward` → `markerStart`)
+
+## Overlay & Interaktion
+
+- Overlay erscheint onHover über Pfad oder Overlay selbst (kleine UI in der Pfadmitte)
+- Toggle „Richtung“: wechselt Pfeilspitze Anfang/Ende (ruft `onDirectionChange` auf)
+- Drag: Pointer Capture auf dem Pfad; Drop via `elementFromPoint`
+  - Drop auf Card → `optimalPort` anhand relativer Drop-Position ermittelt (top/right/bottom/left)
+  - Drop auf Connector → `onNewConnection(fromConnectorId, toConnectorId)`
+
+## Performance-Hinweise
+
+- Pfad wird nur bei Relevanz neu berechnet (Positionsänderungen beteiligter Cards)
+- Geringer Overdraw: lokales SVG pro Connector (Bounds-basiert)
+- Pointer Events nur auf Stroke → UI darunter bleibt leichtgewichtig
+
+## Troubleshooting
+
+- „Linien blockieren Card-Drag“ → SVG `pointer-events: none`, Pfad `pointer-events: stroke` sicherstellen
+- „Rundungen fehlen“ → Corner-Radius erhöhen (z. B. 12–16) und 90°-Erkennung (epsilon) prüfen
+- „Pfeilspitze fehlt“ → `markerStart/End`-IDs konsistent und im selben SVG definieren
+
+## Props
+
+<Primary />
+
+{/* ArgsTable disabled for current SB version */}
+
+## Stories
+
+<Stories />
+
+

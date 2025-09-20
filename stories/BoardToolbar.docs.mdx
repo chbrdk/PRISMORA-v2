@@ -1,0 +1,29 @@
+import { Meta, Primary, Stories } from '@storybook/blocks';
+import * as BoardToolbarStories from './BoardToolbar.stories';
+
+<Meta title="Docs/BoardToolbar" of={BoardToolbarStories} />
+
+# BoardToolbar
+
+Toolbar für Board-Controls: Zoom/Reset sowie Presenter/Follow (beeinflussen den globalen Store).
+
+## Beispiel
+```tsx
+<div style={{ position: 'absolute', top: 16, left: 16 }}>
+  <BoardToolbar />
+</div>
+```
+
+## Props
+<Primary />
+{/* ArgsTable disabled for current SB version */}
+
+## Verhalten
+- Zoom/Reset steuern `canvas.zoom` / `canvas.pan`.
+- Present setzt `ui.presenterMode`/`ui.presenterUserId` und broadcastet die View.
+- Follow setzt lokale View auf `ui.presenterView`.
+
+## Stories
+<Stories />
+
+

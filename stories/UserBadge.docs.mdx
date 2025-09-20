@@ -1,0 +1,43 @@
+import { Meta, Primary, Stories } from '@storybook/blocks';
+import { UserBadge } from '@/components/ui/user-badge';
+
+<Meta title="Docs/UserBadge" component={UserBadge} />
+
+# UserBadge
+
+Wiederverwendbares Avatar/Initialien-Badge mit Statusdarstellung, Tooltip und Größen.
+
+## Überblick
+
+- States:
+  - `default`: Normale Darstellung
+  - `presenting`: Pulsierender Ring + kleines "LIVE"-Badge (Presenter-Modus)
+  - `inactive`: Ausgegraut (manuell oder automatisch via `lastActiveAt` > 5min)
+- Tooltip: Zeigt den Namen unterhalb des Badges (`showTooltip`)
+- Größen: `xs`, `sm`, `md`, `lg`
+- Farbe: `colorToken` steuert Ring/Accent
+
+## Verwendung
+
+```tsx
+<UserBadge name="Alex Beispiel" avatarUrl="/alex.png" size="md" />
+<UserBadge name="Presenter" state="presenting" colorToken="#0ea5e9" />
+<UserBadge name="Idle" lastActiveAt={new Date(Date.now() - 6*60*1000).toISOString()} />
+```
+
+## Verhalten
+
+- `lastActiveAt`: Wenn Zeitstempel > 5 Minuten zurückliegt, wird automatisch `inactive` angezeigt (sofern `state` nicht explizit gesetzt ist)
+- Tooltip wird unterhalb angezeigt (für überlappendes Board-UI geeignet)
+
+## Props
+
+<Primary />
+
+{/* ArgsTable disabled for current SB version */}
+
+## Stories
+
+<Stories />
+
+

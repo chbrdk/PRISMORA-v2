@@ -1,0 +1,27 @@
+services:
+  # PRISMORA-v2 Standalone Storybook
+  prismora-v2-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8006:8006"
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - storybook-v2-cache:/app/storybook-static
+    restart: unless-stopped
+    networks:
+      - prismora-v2-network
+
+volumes:
+  storybook-v2-cache:
+
+networks:
+  prismora-v2-network:
+    driver: bridge

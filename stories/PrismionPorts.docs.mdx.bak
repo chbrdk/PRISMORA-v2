@@ -1,0 +1,152 @@
+import { Meta } from '@storybook/blocks';
+import * as PrismionPortsStories from './PrismionPorts.stories';
+
+<Meta of={PrismionPortsStories} />
+
+# PrismionPorts
+
+Die `PrismionPorts` Komponente ist das Herzstück der Prismion-Verbindungslogik. Sie stellt 4 interaktive Andockpunkte (Ports) bereit, die es Benutzern ermöglichen, neue Prismions zu erstellen oder Attachments an vorhandene Prismions anzufügen.
+
+## Features
+
+### 🎯 **4 Andockpunkte**
+- **Top Port**: Menü fährt nach oben aus (-170°)
+- **Right Port**: Menü fährt nach rechts aus (-80°)
+- **Bottom Port**: Menü fährt nach unten aus (10°)
+- **Left Port**: Menü fährt nach links aus (100°)
+
+### 🎨 **Hover-Effekte**
+- Ports werden beim Hover über die Prismion-Karte sichtbar
+- Skalierung und Translation für visuelles Feedback
+- Smooth Transitions mit CSS-Animationen
+
+### 🎪 **Radiale Menüs**
+- 5 Aktionen pro Port: Prompt, Dokument, Bild, Video, Link
+- Gestaffelte Einblendung der Icons (60ms Abstand)
+- Richtungsbasierte Ausrichtung je nach Port-Position
+
+### 🔄 **Intelligente Port-Wechsel**
+- Erstes Menü schließt sich automatisch beim Klick auf anderen Port
+- 150ms Verzögerung für saubere Übergänge
+- Außenklick schließt das aktive Menü
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `className` | `string?` | Zusätzliche CSS-Klassen |
+| `onConnectorClick` | `(port: PortSide, event: React.MouseEvent) => void?` | Callback für Port-Klicks |
+| `onConnectorDrag` | `(port: PortSide, event: React.MouseEvent) => void?` | Callback für Port-Drag |
+| `onCreatePrismion` | `(port: PortSide, type: 'prompt' \| 'file' \| 'image' \| 'video' \| 'link') => void?` | Callback für neue Prismions |
+| `onAttachToExisting` | `(port: PortSide, type: 'file' \| 'image' \| 'video' \| 'link') => void?` | Callback für Attachments |
+
+## Verwendung
+
+```tsx
+import { PrismionPorts } from '@/components/board/prismion-ports';
+
+function MyPrismionCard() {
+  return (
+    <div className="relative w-80 h-60 bg-white rounded-lg group">
+      {/* Prismion Content */}
+      <div className="p-4">
+        <h3>My Prismion</h3>
+        <p>Content here...</p>
+      </div>
+      
+      {/* Ports */}
+      <PrismionPorts
+        onCreatePrismion={(port, type) => {
+          console.log(`Create ${type} from ${port} port`);
+        }}
+        onAttachToExisting={(port, type) => {
+          console.log(`Attach ${type} to ${port} port`);
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## Aktionen
+
+### 🆕 **Neue Prismions erstellen**
+- **Prompt**: Erstellt ein neues Prompt-Prismion
+- **Dokument**: Fügt ein Dokument an das vorhandene Prismion an
+- **Bild**: Fügt ein Bild an das vorhandene Prismion an
+- **Video**: Fügt ein Video an das vorhandene Prismion an
+- **Link**: Fügt einen Link an das vorhandene Prismion an
+
+### 🔗 **Verbindungen herstellen**
+- **Drag**: Ziehen Sie einen Port zu einer anderen Prismion-Karte
+- **Click**: Klicken Sie auf einen Port für das radiale Menü
+- **Outside Click**: Klicken Sie außerhalb um das Menü zu schließen
+
+## Animation-Details
+
+### 🎬 **Gestaffelte Einblendung**
+```css
+transition-delay: ${idx * 0.06}s;
+```
+- Jedes Icon erscheint 60ms nach dem vorherigen
+- Smooth Scale- und Opacity-Übergänge
+- 220ms Gesamtdauer für alle Icons
+
+### 🔄 **Port-Wechsel**
+```typescript
+if (activePort && activePort !== side) {
+  setActivePort(null);
+  setTimeout(() => setActivePort(side), 150);
+}
+```
+- Erstes Menü schließt sich sofort
+- 150ms Pause für Schließ-Animation
+- Neues Menü öffnet sich mit Animation
+
+### 🎯 **Hover-Effekte**
+```css
+group-hover:scale-125 group-hover:-translate-y-6  /* Top */
+group-hover:scale-125 group-hover:translate-x-6   /* Right */
+group-hover:scale-125 group-hover:translate-y-6   /* Bottom */
+group-hover:scale-125 group-hover:-translate-x-6  /* Left */
+```
+
+## Best Practices
+
+### ✅ **Do's**
+- Verwenden Sie die Komponente innerhalb einer `group` CSS-Klasse
+- Implementieren Sie beide Callbacks (`onCreatePrismion` und `onAttachToExisting`)
+- Stellen Sie sicher, dass die Parent-Komponente `relative` positioning hat
+
+### ❌ **Don'ts**
+- Überschreiben Sie nicht die Port-Positionen
+- Verwenden Sie nicht mehrere `PrismionPorts` in derselben Karte
+- Ignorieren Sie nicht die `onConnectorDrag` Callbacks für Drag-Funktionalität
+
+## Integration mit PrismionCard
+
+Die `PrismionPorts` Komponente ist vollständig in `PrismionCard` integriert:
+
+```tsx
+// In PrismionCard
+<PrismionPorts
+  onConnectorClick={onConnectorClick}
+  onConnectorDrag={onConnectorDrag}
+  onCreatePrismion={onCreatePrismion}
+  onAttachToExisting={onAttachToExisting}
+/>
+```
+
+## Accessibility
+
+- **Keyboard Navigation**: Ports sind über Tab erreichbar
+- **Screen Reader**: Alle Aktionen haben beschreibende Labels
+- **Focus Management**: Fokus wird beim Öffnen/Schließen korrekt verwaltet
+- **ARIA Labels**: Semantische Beschreibungen für alle Interaktionen
+
+## Performance
+
+- **Optimized Rendering**: Nur aktive Ports werden gerendert
+- **Event Delegation**: Effiziente Event-Behandlung
+- **CSS Transforms**: Hardware-beschleunigte Animationen
+- **Memory Management**: Cleanup bei Component Unmount

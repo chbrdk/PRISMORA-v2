@@ -1,0 +1,28 @@
+import { Meta, Primary, Stories } from '@storybook/blocks';
+import * as UserToolbarStories from './UserToolbar.stories';
+
+<Meta title="Docs/UserToolbar" of={UserToolbarStories} />
+
+# UserToolbar
+
+Kompakte User-Steuerung mit Settings-Dialog (Name/Avatar) und optionalen Presenter/Follow-Toggles.
+
+## Beispiel
+```tsx
+<div style={{ position: 'absolute', top: 16, right: 16 }}>
+  <UserToolbar variant="compact" />
+</div>
+```
+
+## Props
+<Primary />
+{/* ArgsTable disabled for current SB version */}
+
+## Varianten
+- `variant="compact"`: Avatar + Gear (Dialog)
+- `variant="default"`: Zusätzlich Presenter/Follow-Toggles
+
+## Stories
+<Stories />
+
+

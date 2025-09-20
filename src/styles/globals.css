@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* PRISMORA Brand Colors - Flat Design */
+    --prismora-primary: 255 67% 58%; /* #ff432e */
+    --prismora-primary-light: 255 67% 68%;
+    --prismora-primary-dark: 255 67% 48%;
+    --prismora-secondary: 255 67% 95%;
+    --prismora-accent: 255 67% 88%;
+    
+    /* Base Colors - Super Flat Design */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 255 67% 58%; /* PRISMORA Brand Color */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 255 67% 95%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
+    --ring: 255 67% 58%;
+    --radius: 35px; /* Moderately rounded - modern design */
+    
+    /* Typography */
+    --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+    
+    /* Spacing - Flat Design */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Shadows - Minimal for Flat Design */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-prismora: 0 4px 14px 0 rgba(255, 67, 46, 0.15);
+  }
+
+  .dark {
+    /* Dark Mode - Flat Design */
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 255 67% 58%; /* PRISMORA Brand Color stays the same */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 255 67% 15%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 255 67% 58%;
+    
+    /* Shadows - Dark Mode */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-prismora: 0 4px 14px 0 rgba(255, 67, 46, 0.25);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* PRISMORA Typography Scale */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  
+  h1 { font-size: 2.5rem; font-weight: 700; }
+  h2 { font-size: 2rem; font-weight: 600; }
+  h3 { font-size: 1.5rem; font-weight: 600; }
+  h4 { font-size: 1.25rem; font-weight: 500; }
+  h5 { font-size: 1.125rem; font-weight: 500; }
+  h6 { font-size: 1rem; font-weight: 500; }
+  
+  /* Flat Design - Minimal Shadows */
+  .flat-shadow {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .flat-shadow-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .flat-shadow-lg {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  .btn-destructive {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+  }
+  
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  .btn-link {
+    @apply underline-offset-4 hover:underline text-primary;
+  }
+  
+  .btn-sm {
+    @apply h-9 px-3 rounded-md;
+  }
+  
+  .btn-md {
+    @apply h-10 py-2 px-4;
+  }
+  
+  .btn-lg {
+    @apply h-11 px-8 rounded-md;
+  }
+  
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+  
+  .card-header {
+    @apply flex flex-col space-y-1.5 p-6;
+  }
+  
+  .card-title {
+    @apply text-2xl font-semibold leading-none tracking-tight;
+  }
+  
+  .card-description {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .card-content {
+    @apply p-6 pt-0;
+  }
+  
+  .card-footer {
+    @apply flex items-center p-6 pt-0;
+  }
+  
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  .label {
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+  }
+}
+
+/* PRISMORA Brand Styles - Flat Design */
+@layer utilities {
+  /* PRISMORA Brand Colors */
+  .text-prismora {
+    color: hsl(var(--prismora-primary));
+  }
+  
+  .bg-prismora {
+    background-color: hsl(var(--prismora-primary));
+  }
+  
+  .border-prismora {
+    border-color: hsl(var(--prismora-primary));
+  }
+  
+  /* Flat Design Gradients */
+  .text-gradient-prismora {
+    background: linear-gradient(135deg, hsl(var(--prismora-primary)) 0%, hsl(var(--prismora-primary-light)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .bg-gradient-prismora {
+    background: linear-gradient(135deg, hsl(var(--prismora-primary)) 0%, hsl(var(--prismora-primary-light)) 100%);
+  }
+  
+  /* Flat Design Shadows */
+  .shadow-prismora {
+    box-shadow: var(--shadow-prismora);
+  }
+  
+  .shadow-prismora-lg {
+    box-shadow: 0 8px 25px 0 rgba(255, 67, 46, 0.25);
+  }
+  
+  /* Flat Design Utilities */
+  .flat-border {
+    border-radius: var(--radius);
+  }
+  
+  .flat-button {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+  
+  .flat-button:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  
+  .flat-card {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  /* Typography Utilities */
+  .font-prismora {
+    font-family: var(--font-family);
+  }
+  
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
