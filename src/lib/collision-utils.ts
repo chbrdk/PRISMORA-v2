@@ -18,14 +18,40 @@ export function rectanglesOverlap(
 /**
  * Resolve overlaps between prismions by moving them
  */
-export function resolveOverlaps(prismions: Prismion[]): Prismion[] {
+export function resolveOverlaps(prismions: Prismion[]): Prismion[];
+export function resolveOverlaps(prismions: Record<string, Prismion>, targetId?: string, options?: { maxIterations?: number; snapToGrid?: number; padding?: number }): Record<string, Prismion>;
+export function resolveOverlaps(
+  prismions: Prismion[] | Record<string, Prismion>, 
+  targetId?: string, 
+  options?: { maxIterations?: number; snapToGrid?: number; padding?: number }
+): Prismion[] | Record<string, Prismion> {
+  // Handle Record<string, Prismion> case
+  if (typeof prismions === 'object' && !Array.isArray(prismions)) {
+    const prismionArray = Object.values(prismions);
+    const resolvedArray = resolveOverlapsArray(prismionArray, targetId, options);
+    
+    // Convert back to Record format
+    const result: Record<string, Prismion> = {};
+    resolvedArray.forEach(prismion => {
+      result[prismion.id] = prismion;
+    });
+    return result;
+  }
+  
+  // Handle Prismion[] case
+  return resolveOverlapsArray(prismions as Prismion[], targetId, options);
+}
+
+function resolveOverlapsArray(prismions: Prismion[], targetId?: string, options?: { maxIterations?: number; snapToGrid?: number; padding?: number }): Prismion[] {
   const resolved: Prismion[] = [];
-  const padding = 20; // Minimum distance between prismions
+  const padding = options?.padding || 20; // Minimum distance between prismions
+  const maxIterations = options?.maxIterations || 100;
+  const snapToGrid = options?.snapToGrid || 0;
 
   for (const prismion of prismions) {
     let newPosition = { ...prismion.position };
     let attempts = 0;
-    const maxAttempts = 100;
+    const maxAttempts = maxIterations;
 
     while (attempts < maxAttempts) {
       const currentRect = {
@@ -50,10 +76,20 @@ export function resolveOverlaps(prismions: Prismion[]): Prismion[] {
         break;
       }
 
-      // Move to a new position
-      newPosition.x += Math.random() * 100 + 50;
-      newPosition.y += Math.random() * 100 + 50;
+      // Try different positions
+      const offset = 10 + attempts * 5; // Increasing offset
+      const angle = (attempts * 45) % 360; // Rotate around
+      const radians = (angle * Math.PI) / 180;
+      
+      newPosition.x += Math.cos(radians) * offset;
+      newPosition.y += Math.sin(radians) * offset;
       attempts++;
+    }
+
+    // Apply snap to grid if enabled
+    if (snapToGrid > 0) {
+      newPosition.x = Math.round(newPosition.x / snapToGrid) * snapToGrid;
+      newPosition.y = Math.round(newPosition.y / snapToGrid) * snapToGrid;
     }
 
     resolved.push({
