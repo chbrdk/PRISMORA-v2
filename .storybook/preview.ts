@@ -1,6 +1,9 @@
 import type { Preview } from "@storybook/react";
 import "../src/styles/globals.css";
 
+// Make MDX components available globally
+import { Meta, Primary, Stories } from "@storybook/addon-docs";
+
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },

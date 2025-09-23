@@ -1,14 +1,10 @@
-import { Meta, Primary, Stories } from '@storybook/addon-docs';
+
 import * as PrismionCardStories from './PrismionCard.stories';
 
 <Meta title="Docs/PrismionCard" of={PrismionCardStories} />
-
 # PrismionCard
-
 Kern-Komponente für Prismora-Karten mit Custom-Drag, Ports/Toolbar/Tags/Results, Auto-Sizing und Collisions.
-
 ## Überblick
-
 - Custom Drag & Drop (ohne Framer Motion), präzise Maus-Verfolgung, Updates auf Drag-End
 - Ports (top/right/bottom/left): Click → neue Karte, Drag → Verbindung zu bestehender Karte/Port
 - Radiale Toolbar (Branch/Merge/Lock/Archive/Delete) – Overlay, blockiert Card-Drag
@@ -18,18 +14,14 @@ Kern-Komponente für Prismora-Karten mit Custom-Drag, Ports/Toolbar/Tags/Results
 - Tags-UX: Add (+), Long-Press → Rename/Delete
 - Branching aus Text-Selektion (Context-Menu → New Prismion with this content)
 - Collision-Resolver (nudge mit Padding 50px), bei Move/Resize/Create/Collapse
-
 ## Architektur & Dateien
-
 - `src/components/board/prismion-card.tsx` – Komponente, Drag/Resize/Ports/Toolbar/Results/Tags/Branching
 - `src/components/board/prismion-ports.tsx` – Ports Overlay (Interaktion entkoppelt)
 - `src/components/board/prismion-toolbar.tsx` – Radial/Bar Toolbar (Animations, Overlay-Handling)
 - `src/components/board/prismion-result.tsx` – Rendern verschiedener Result-Kinds
 - `src/lib/collision-utils.ts` – Overlap-Erkennung und -Auflösung (padding, snap)
 - `src/types/prismora.ts` – Typen (Kinds, Content-Union, Prismion/Connector etc.)
-
 ## Props (Auszug)
-
 - `prismion`: vollständiges Prismion-Modell (Position/Size/State/Kind/Content/Tags ...)
 - `selected?`: boolean (selektierter Rahmen/Resizer sichtbar)
 - `onSelect?(multi?)`: Auswahl-Callback (Shift = Multi)
@@ -42,9 +34,7 @@ Kern-Komponente für Prismora-Karten mit Custom-Drag, Ports/Toolbar/Tags/Results
 - `collapsed?/onToggleCollapse?`: Collapsed State steuern
 - `onAddTag?/onUpdateTag?/onDeleteTag?`: Tag-CRUD
 - `onBranchFromSelection?(text)`: Branching aus Text-Selektion
-
 ## Beispiel (Interaktiv)
-
 ```tsx
 <PrismionCard
   prismion={node}
@@ -64,50 +54,33 @@ Kern-Komponente für Prismora-Karten mit Custom-Drag, Ports/Toolbar/Tags/Results
   onBranchFromSelection={(text) => branchFromText(node.id, text)}
 />
 ```
-
 ## Interaktionen & UX-Details
-
 - Drag startet nicht auf interaktiven Bereichen (Inputs, Buttons, Links, Content-Selektion)
 - Resizer nur bei „selected“ sichtbar
 - Toolbar-Buttons nutzen `stopPropagation`/`preventDefault` → kein Card-Drag
 - Ports-Overlay erhält pointer-events, Card darunter bleibt dragbar
 - Collapsed-Toggle: `onMouseDown` stoppt Drag, `onClick` toggelt Zustand
-
 ## Auto-Sizing & Media
-
 - Text-Results: max 800px Breite, Höhe dynamisch (ResizeObserver) → `onResize`
 - Image/Video: `mediaSize` (`sm:360px`, `md:560px`, `lg:800px` Breite)
-
 ## Collision-Handling
-
 - `resolveOverlaps(prismions, changedId, { padding: 50, snapToGrid: 10 })`
 - Wird in Move/Resize/Create/Collapse aufgerufen (Story-Demo)
-
 ## Props & Stories
-
 <Primary />
-
 {/* ArgsTable disabled for current SB version */}
-
 <Stories />
-
 ## Troubleshooting
-
 - Text nicht markierbar? → Sicherstellen, dass Drag-Start in `prismion-card.tsx` Content-Zone erkennt und Drag unterdrückt.
 - Toolbar blockiert Drag? → Buttons müssen `stopPropagation()`/`preventDefault()` im `onMouseDown` nutzen.
 - Collapsed-Toggle klickt aber draggt? → Toggle hat `onMouseDown` (stoppt Drag) und `onClick` (toggle).
 - Karte ändert Größe nicht bei langen Texten? → ResizeObserver aktiv und `onResize` an Parent verdrahtet; Text maxWidth 800px.
 - Tags-Edit: Long-Press (600ms) aktivieren, Enter/Escape-handling in Input beachten.
-
 ## Do / Don’t
-
 Do
 - Drag-Updates nur auf Drag-End persistieren (Performance)
 - Collision-Resolver mit Padding 50px nutzen
 - Ports/Toolbar als Overlay mit gezielten Pointer-Events
-
 Don’t
 - SVG/Connector über Cards mit `pointer-events: all` legen (blockiert UI)
 - Resizes ohne Beibehalt von minW/minH übernehmen
-
-

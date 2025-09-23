@@ -1,55 +1,41 @@
-import { Meta } from '@storybook/addon-docs';
+
 import { PrismionPorts } from '@/components/board/prismion-ports';
 
 <Meta title="Board/PrismionPorts" component={PrismionPorts} />
-
 # PrismionPorts
-
 Die `PrismionPorts` Komponente zeigt die 4 Andockpunkte (Ports) einer Prismion-Karte. Sie ermöglicht es Benutzern, neue Prismions zu erstellen oder Attachments zu vorhandenen Prismions hinzuzufügen.
-
 ## Features
-
 ### 🎨 **Hover-Effekte**
 - Ports werden beim Hover über die Prismion-Karte sichtbar
 - Sanfte Übergänge mit CSS-Transitions
 - Visuelle Rückmeldung für bessere UX
-
 ### 🎯 **Radiale Menüs**
 - Klick auf einen Port öffnet ein radiales Menü
 - Menü fährt in die richtige Richtung aus (top → oben, right → rechts, etc.)
 - Gestaffelte Animation der Menü-Icons
-
 ### 🔄 **Port-Wechsel**
 - Elegante Übergänge beim Wechsel zwischen Ports
 - Erstes Menü schließt sich, dann öffnet sich das neue
 - 150ms Verzögerung für flüssige Animation
-
 ### 🎪 **Animation-System**
 - Gestaffelte Entrance-Animation (60ms Delay pro Icon)
 - Smooth Transitions mit CSS
 - Animation wird bei jedem Port-Wechsel neu gestartet
-
 ## Props
-
 | Prop | Type | Description |
 |------|------|-------------|
 | `onCreatePrismion` | `(type: 'prompt' \| 'image' \| 'video' \| 'file' \| 'link') => void` | Callback für neue Prismion-Erstellung |
 | `onAttachToExisting` | `(type: 'image' \| 'video' \| 'file' \| 'link') => void` | Callback für Attachment zu vorhandenem Prismion |
-
 ## Verwendung
-
 ```tsx
 import { PrismionPorts } from '@/components/board/prismion-ports';
-
 function MyComponent() {
   const handleCreatePrismion = (type) => {
     console.log('Creating new prismion:', type);
   };
-
   const handleAttachToExisting = (type) => {
     console.log('Attaching to existing prismion:', type);
   };
-
   return (
     <div className="relative w-32 h-32">
       <PrismionPorts
@@ -60,52 +46,39 @@ function MyComponent() {
   );
 }
 ```
-
 ## Animation-Details
-
 ### Gestaffelte Entrance-Animation
 ```css
 transition-delay: ${idx * 60}ms;
 transition-duration: 220ms;
 transition-property: transform, opacity;
 ```
-
 ### Port-Richtungen
 - **Top**: `startDeg = -170°` (nach oben)
 - **Right**: `startDeg = -80°` (nach rechts)
 - **Bottom**: `startDeg = 10°` (nach unten)
 - **Left**: `startDeg = 100°` (nach links)
-
 ## Best Practices
-
 ### ✅ **Do's**
 - Verwenden Sie die Komponente innerhalb eines relativen Containers
 - Implementieren Sie sinnvolle Callbacks für die Aktionen
 - Testen Sie die Animation auf verschiedenen Bildschirmgrößen
-
 ### ❌ **Don'ts**
 - Verwenden Sie die Komponente nicht ohne Container
 - Überschreiben Sie nicht die CSS-Animationen
 - Ignorieren Sie nicht die Callback-Funktionen
-
 ## Accessibility
-
 - **Keyboard Navigation**: Unterstützt Tab-Navigation
 - **Screen Reader**: ARIA-Labels für alle interaktiven Elemente
 - **Focus Management**: Sichtbare Focus-Indikatoren
 - **Color Contrast**: Erfüllt WCAG 2.1 AA Standards
-
 ## Performance
-
 - **Optimized Rendering**: Nur notwendige Re-Renders
 - **Event Delegation**: Effiziente Event-Behandlung
 - **CSS Transitions**: Hardware-beschleunigte Animationen
 - **Memory Management**: Saubere Cleanup-Funktionen
-
 ## Integration
-
 Die Komponente ist vollständig in das PRISMORA-System integriert:
-
 - **BoardCanvas**: Verwendet in PrismionCard
 - **State Management**: Zustand über Zustand Store
 - **API Integration**: Verbunden mit Backend-Endpoints
