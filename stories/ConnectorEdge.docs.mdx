@@ -83,7 +83,7 @@ Hier sorgen die Q-Kommandos für weiche 90°-Kurven. Der tatsächliche Radius wi
 ## Overlay & Interaktion
 
 - Overlay erscheint onHover über Pfad oder Overlay selbst (kleine UI in der Pfadmitte)
-- Toggle „Richtung“: wechselt Pfeilspitze Anfang/Ende (ruft `onDirectionChange` auf)
+- Toggle „Richtung": wechselt Pfeilspitze Anfang/Ende (ruft `onDirectionChange` auf)
 - Drag: Pointer Capture auf dem Pfad; Drop via `elementFromPoint`
   - Drop auf Card → `optimalPort` anhand relativer Drop-Position ermittelt (top/right/bottom/left)
   - Drop auf Connector → `onNewConnection(fromConnectorId, toConnectorId)`
@@ -96,9 +96,9 @@ Hier sorgen die Q-Kommandos für weiche 90°-Kurven. Der tatsächliche Radius wi
 
 ## Troubleshooting
 
-- „Linien blockieren Card-Drag“ → SVG `pointer-events: none`, Pfad `pointer-events: stroke` sicherstellen
-- „Rundungen fehlen“ → Corner-Radius erhöhen (z. B. 12–16) und 90°-Erkennung (epsilon) prüfen
-- „Pfeilspitze fehlt“ → `markerStart/End`-IDs konsistent und im selben SVG definieren
+- „Linien blockieren Card-Drag" → SVG `pointer-events: none`, Pfad `pointer-events: stroke` sicherstellen
+- „Rundungen fehlen" → Corner-Radius erhöhen (z. B. 12–16) und 90°-Erkennung (epsilon) prüfen
+- „Pfeilspitze fehlt" → `markerStart/End`-IDs konsistent und im selben SVG definieren
 
 ## Props
 
@@ -109,5 +109,3 @@ Hier sorgen die Q-Kommandos für weiche 90°-Kurven. Der tatsächliche Radius wi
 ## Stories
 
 <Stories />
-
-
