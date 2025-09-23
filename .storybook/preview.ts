@@ -4,12 +4,14 @@ import "../src/styles/globals.css";
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
+
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
       },
     },
+
     backgrounds: {
       default: "light",
       values: [
@@ -27,10 +29,19 @@ const preview: Preview = {
         },
       ],
     },
+
     docs: {
       toc: true,
     },
+
     layout: "centered",
+
+    a11y: {
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: "todo",
+    },
   },
   globalTypes: {
     theme: {
@@ -49,8 +60,8 @@ const preview: Preview = {
 export default preview;
 
 // Increase height of code blocks in Docs ("Show code") via injected styles
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style');
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
   style.innerHTML = `
   .sbdocs .docblock-source { max-height: 720px !important; }
   .sbdocs .docblock-source pre, .sbdocs .docblock-source code { max-height: 720px !important; }

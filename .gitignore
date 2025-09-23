@@ -45,3 +45,5 @@ storybook-static/
 
 # OS generated files
 Thumbs.db
+
+*storybook.log
